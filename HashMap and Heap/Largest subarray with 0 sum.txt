@@ -1,0 +1,62 @@
+// { Driver Code Starts
+import java.util.*;
+
+class MaxLenZeroSumSub
+{
+
+    // Returns length of the maximum length subarray with 0 sum
+
+    // Drive method
+    public static void main(String arg[])
+    {
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+        while (T > 0)
+        {
+            int n = sc.nextInt();
+            int arr[] = new int[n];
+            for (int i = 0; i < n; i++)
+                arr[i] = sc.nextInt();
+
+            GfG g = new GfG();
+            System.out.println(g.maxLen(arr, n));
+            T--;
+        }
+    }
+}// } Driver Code Ends
+
+
+class GfG
+{
+    int maxLen(int arr[], int n)
+    {
+        // Your code here
+        HashMap<Integer, Integer> map = new HashMap<>();
+		
+		int csum = 0;
+		int ans = 0;
+		
+		//initial put 0 with -1 to handle some test cases
+		map.put(csum, -1);
+		
+		for (int i = 0; i < n; i++) {
+			
+			//add to current sum 
+			csum += arr[i];
+			
+			//if csum already exist, means in between sum became 0
+			if (map.containsKey(csum)) {
+				//find initial index of csum
+				int idx = map.get(csum);
+				//subtract with current index
+				int len = i - idx;
+				//and store max of ans or len to ans
+				ans = Math.max(ans, len);
+			} else {
+				//else put csum with it current/initial index to map
+				map.put(csum, i);
+			}
+		}
+		return ans;
+    }
+}
