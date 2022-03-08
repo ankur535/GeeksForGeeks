@@ -1,0 +1,60 @@
+// { Driver Code Starts
+//Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+
+class GFG{
+    public static void main(String args[])throws IOException
+    {
+        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(read.readLine());
+        while(t-- > 0)
+        {
+            int N = Integer.parseInt(read.readLine());
+            String input_line[] = read.readLine().trim().split("\\s+");
+            int Arr[]= new int[N];
+            for(int i = 0; i < N; i++)
+                Arr[i] = Integer.parseInt(input_line[i]);
+            int k = Integer.parseInt(read.readLine());
+            
+            Solution ob = new Solution();
+            System.out.println(ob.findSubArraySum(Arr, N, k));
+        }
+    }
+}// } Driver Code Ends
+
+
+//User function Template for Java
+
+class Solution
+{
+    static int findSubArraySum(int Arr[], int N, int k)
+    {
+        // code here
+        HashMap<Integer, Integer> map = new HashMap<>();
+		
+		int count = 0;
+		int csum = 0;
+		//inital csum in map with freq 1
+		map.put(csum, 1);
+		
+		for (int i = 0; i < N; i++) {
+			
+			csum += Arr[i];
+			
+			//finding x as (y - k) or ((x + k )- k))
+			int x = csum - k;
+			
+			//if map conatains x, add its freq to count
+			if (map.containsKey(x)) {
+				count += map.get(x);
+			}
+			
+			//if value/freq exist, increase by 1 else add new entry with freq 0+1 = 1
+			map.put(csum, map.getOrDefault(csum, 0) + 1);
+		}
+		
+		return count;
+    }
+}
