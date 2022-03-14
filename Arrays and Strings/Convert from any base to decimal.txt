@@ -1,0 +1,47 @@
+// { Driver Code Starts
+//Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+import java.lang.*;
+
+class GFG{
+    public static void main(String args[])throws IOException
+    {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(in.readLine());
+        while(t-- > 0){
+            int b = Integer.parseInt(in.readLine());
+            String N = in.readLine();
+            
+            Solution ob = new Solution();
+            System.out.println(ob.decimalEquivalent(N, b));
+        }
+    }
+}// } Driver Code Ends
+
+
+//User function Template for Java
+
+class Solution{
+    static int decimalEquivalent(String N, int b)
+    {
+        // code here
+        
+        
+        int decimal = 0;
+        
+        for (int i = 0; i < N.length(); i++) {
+            char c = N.charAt(i);
+            int digit = Character.isDigit(c) ? c - '0' : c - 'A' + 10;
+            
+            if (digit >= b) return -1;
+            
+            //forward traversal technique
+            decimal = (decimal * b) + digit;
+        }
+        
+        return decimal;
+        
+    }
+}
