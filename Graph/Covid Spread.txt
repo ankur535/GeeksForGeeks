@@ -1,0 +1,105 @@
+// { Driver Code Starts
+//Initial Template for Java
+import java.io.*;
+import java.util.*;
+class GFG
+{
+    public static void main(String args[])throws IOException
+    {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+        while(t-- > 0)
+        {
+            
+            
+            int R = sc.nextInt();
+            
+            int C = sc.nextInt();
+            
+           
+            
+            int hospital[][] = new int[R][C];
+            
+            int cnt=0;
+            for(int i = 0; i < R; i++)
+                {
+                    for(int j=0; j < C; j++)
+                {
+                    hospital[i][j] = sc.nextInt();
+                }
+                    
+                }
+            
+            Solution ob = new Solution();
+            System.out.println(ob.helpaterp(hospital));
+        }
+    }
+}
+// } Driver Code Ends
+
+
+//User function Template for Java
+
+class Solution{
+	//Same as rotten oranges
+     public int helpaterp(int[][] hospital) {
+        // code here
+        int n = hospital.length;
+        int m = hospital[0].length;
+        
+        LinkedList<Integer> que = new LinkedList<>();
+        int countUninfected = 0;
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (hospital[i][j] == 2) {
+                    que.addLast(i*m+j);
+                } else if (hospital[i][j] == 1) {
+                    countUninfected++;
+                }
+            }
+        }
+        
+        if (countUninfected == 0) {
+            return 0;
+        }
+        
+        int level = 0;
+        
+        int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0}};
+        
+        while (que.size() > 0) {
+            int size = que.size();
+            
+            while (size-- > 0) {
+                
+                int idx= que.removeFirst();
+                
+                int i = idx/m;
+                int j = idx%m;
+                
+                for (int[] dir: dirs) {
+                    
+                    int x = i + dir[0];
+                    int y = j + dir[1];
+                    
+                    if (x >= 0 && y >= 0 && x < n && y < m && hospital[x][y] == 1) {
+                        hospital[x][y] = 2;
+                        countUninfected--;
+                        
+                        if (countUninfected == 0) {
+                            return level + 1;
+                        }
+                        que.addLast(x*m+y);
+                    }
+                }
+            }
+            
+            level++;
+        }
+        
+        return -1;
+        
+    }
+}
