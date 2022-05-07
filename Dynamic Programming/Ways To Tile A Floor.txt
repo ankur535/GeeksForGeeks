@@ -1,0 +1,122 @@
+// { Driver Code Starts
+import java.io.*;
+import java.util.*;
+
+class GFG {
+    public static void main(String args[]) throws IOException {
+        BufferedReader read =
+            new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(read.readLine());
+        while (t-- > 0) {
+            int N = Integer.parseInt(read.readLine());
+
+            Solution ob = new Solution();
+            System.out.println(ob.numberOfWays(N));
+        }
+    }
+}// } Driver Code Ends
+
+
+class Solution {
+    
+    static long mod = (long)1e9+7;
+    
+    static Long numberOfWays(int N) {
+        // code here
+        //long ans = rec(N);
+        
+        /*
+        long[] memo = new long[N+1];
+        long ans = rec_memo(N, memo);
+        */
+        
+        //long ans = rec_tab(N);
+        
+        long ans = tab_better(N);
+        
+        return ans;
+    }
+    
+    //Tabulation better, same as fibonacci
+	public static long tab_better(int n) {
+		
+		if (n == 1) return 1;
+		
+		long a = 1;	//for n == 0 case
+		long b = 1;	//for n == 1 case
+		
+		for (int i = 2; i <= n; i++) {
+			
+			//simple next value is sum of last 2 values
+			long c = a + b;
+			
+			a = b%mod;
+			b = c%mod;			
+		}
+		
+		return b;		
+	}
+	
+	//tabulation
+	public static long rec_tab(int n) {
+		
+		long[] dp = new long[n+1];
+		dp[0] = 1;
+		
+		for (int i = 1; i <= n; i++) {
+			
+			long ans = dp[i-1];
+			
+			//placing horizontal tile
+			if (i-2 >= 0) {
+				ans += dp[i-2];
+			}
+			
+			dp[i] = ans%mod;
+		}
+				
+		return dp[n];
+	}
+    
+    //memoization
+	public static long rec_memo(int n, long[] memo) {
+		
+		if (n == 0) {
+			return memo[n] = 1;
+		}
+		
+		if (memo[n] != 0) return memo[n];
+		
+		//Vertical tile
+		long ans = 0;
+		
+		ans = rec_memo(n-1, memo);
+		
+		//Horizontal tile
+		if (n-2 >= 0) {
+			ans += rec_memo(n-2, memo);
+		}
+		
+		return memo[n] = ans%mod;
+	}
+	
+	//Recursion
+	public static long rec(int n) {
+		
+		if (n == 0) {
+			return 1;
+		}
+	
+		//Vertical tile
+		long ans = 0;
+		
+		ans = rec(n-1);
+		
+		//Horizontal Tile
+		if (n-2 >= 0) {
+			ans += rec(n-2);
+		}
+		
+		return ans%mod;		
+	}
+};
